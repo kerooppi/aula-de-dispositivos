@@ -1,0 +1,58 @@
+package com.example.myapplication;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText editNumero1;
+    private EditText editNumero2;
+    private TextView resultado;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editNumero1 = findViewById(R.id.editNumero1);
+        editNumero2 = findViewById(R.id.editNumero2);
+        resultado = findViewById(R.id.tvResultado);
+
+
+    }
+
+    public void calcular(View view){
+        double n1 = -1;
+        try {
+            n1 = Double.parseDouble(editNumero1.getText().toString());
+        } catch (Exception e){
+
+        }
+        double n2 = -1;
+        try{
+             n2 = Double.parseDouble(editNumero2.getText().toString());
+        } catch (Exception e){
+
+        }
+
+        if(n1 == -1){
+            resultado.setText("Digite um numero");
+            resultado.setTextColor(Color.rgb(250,00,00));
+        }else if (n2 == -1){
+            resultado.setText("Digite um numero");
+            resultado.setTextColor(Color.rgb(250,00,00));
+        }else{
+            double soma = n1 + n2;
+            resultado.setText(soma + "");
+            resultado.setTextColor(Color.rgb(000, 00, 0));
+        }
+
+
+
+    }
+}
