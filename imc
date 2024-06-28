@@ -1,0 +1,70 @@
+package com.example.imc;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText etPeso;
+    private EditText etAltura;
+    private RadioButton rbFem;
+    private RadioButton rbMasc;
+    private TextView tvResultado;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        etPeso = findViewById(R.id.editTextPeso);
+        etAltura = findViewById(R.id.editTextAltura);
+        rbFem = findViewById(R.id.radioButtonFem);
+        rbMasc = findViewById(R.id.radioButtonMasc);
+        tvResultado = findViewById(R.id.textViewResultado);
+
+    }
+    public void calc(View view){
+        float peso = Float.parseFloat(etPeso.getText().toString());
+        float altura = Float.parseFloat(etAltura.getText().toString());
+
+        float imc = peso/(altura*altura);
+
+        if (rbMasc.isChecked()) {
+            if (imc <= 18.5) {
+                tvResultado.setText("Abaixo do normal");
+            } else if (imc <= 24.9) {
+                tvResultado.setText("Normal");
+            } else if (imc <= 29.9) {
+                tvResultado.setText("Obesidade leve");
+            } else if (imc <= 39.9) {
+                tvResultado.setText("Obesidade grau 1");
+            } else if (imc <= 40) {
+                tvResultado.setText("Obesidade grau 2");
+            } else {
+                tvResultado.setText("Obesidade grau 3");
+            }
+        }
+        if (rbFem.isChecked()) {
+            if (imc <= 18.5) {
+                tvResultado.setText("Abaixo do normal");
+            } else if (imc <= 24.9) {
+                tvResultado.setText("Normal");
+            } else if (imc <= 29.9) {
+                tvResultado.setText("Obesidade leve");
+            } else if (imc <= 34.9) {
+                tvResultado.setText("Obesidade grau 1");
+            } else if (imc <= 40) {
+                tvResultado.setText("Obesidade grau 2");
+            } else {
+                tvResultado.setText("Obesidade grau 3");
+
+            }
+        }
+    }
+}
