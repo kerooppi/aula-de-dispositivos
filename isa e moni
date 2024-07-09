@@ -1,0 +1,104 @@
+package com.example.teste;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+    private Button buttonPedra;
+    private Button buttonPapel;
+    private Button buttonTesoura;
+    private Button buttonReinicia;
+    private TextView textViewResul;
+    private TextView textViewPontos;
+    private int sorteio;
+    private int pontuacao = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        buttonPedra = findViewById(R.id.buttonPedra);
+        buttonPapel = findViewById(R.id.buttonPapel);
+        buttonTesoura = findViewById(R.id.buttonTesoura);
+        buttonReinicia = findViewById(R.id.buttonReinicia);
+        textViewResul = findViewById(R.id.textViewResul);
+        textViewPontos = findViewById(R.id.textViewPontos);
+    }
+
+    public void pedra(View view) {
+        while (true) {
+            double x = Math.random() * 10;
+            sorteio = (int) x;
+
+            if (sorteio <= 2) {
+                break;
+            }
+        }
+
+        if (sorteio == 0) {
+            textViewResul.setText("Empate");
+            pontuacao = pontuacao +1;
+            textViewPontos.setText(pontuacao+"");
+        } else if (sorteio == 1) {
+            textViewResul.setText("Perdeu");
+            pontuacao = 0;
+            buttonPedra.setVisibility(view.INVISIBLE);
+        }else {
+            textViewResul.setText("Ganhou");
+            pontuacao = pontuacao + 2;
+            textViewPontos.setText(pontuacao+"");
+            }
+        }
+
+    public void papel(View view) {
+        while (true) {
+            double x = Math.random() * 10;
+            sorteio = (int) x;
+
+            if (sorteio <= 2) {
+                break;
+            }
+        }
+        if (sorteio == 0) {
+            textViewResul.setText("Ganhou");
+            pontuacao = pontuacao + 2;
+            textViewPontos.setText(pontuacao+"");
+        } else if (sorteio == 1) {
+            textViewResul.setText("Empate");
+            pontuacao = pontuacao + 1;
+            textViewPontos.setText(pontuacao+"");
+        }else {
+            textViewResul.setText("Perdeu");
+            pontuacao =  0;
+            buttonPedra.setVisibility(view.INVISIBLE);
+        }
+    }
+
+    public void tesoura(View view) {
+        while (true) {
+            double x = Math.random() * 10;
+            sorteio = (int) x;
+
+            if (sorteio <= 2) {
+                break;
+            }
+        }
+        if (sorteio == 0) {
+            textViewResul.setText("Perdeu");
+            pontuacao = 0;
+            buttonPedra.setVisibility(view.INVISIBLE);
+        } else if (sorteio == 1) {
+            textViewResul.setText("Ganhou");
+            pontuacao = pontuacao + 2;
+            textViewPontos.setText(pontuacao+"");
+        } else {
+            textViewResul.setText("Empate");
+            pontuacao = pontuacao + 1;
+            textViewPontos.setText(pontuacao+"");
+        }
+    }
+}
