@@ -32,7 +32,11 @@ public class MainActivity extends AppCompatActivity {
         inserirDados();
         listarDados();
     }
-
+    @Override
+    protected void onResume(){
+        super.onResume();
+        listarDados();
+    }
     public void criarBancoDados() {
         try {
             bancodados = openOrCreateDatabase("crudapp", MODE_PRIVATE, null);
