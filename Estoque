@@ -1,0 +1,123 @@
+package com.example.estoque;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
+import android.database.sqlite.SQLiteAbortException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    private SQLiteDatabase bancoDados;
+    public ListView listaprodutos;
+    public Button buttoncadastrar;
+    public ArrayList <Integer> arrayIds;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        listaprodutos = (ListView) findViewById(R.id.listaProdutos);
+        buttoncadastrar = (Button) findViewById(R.id.buttonAdicionar);
+
+        criarBancoDados();
+        listarDados();
+
+        Button buttonRetirar = findViewById(R.id.buttonRetirar);
+        buttonRetirar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = listaprodutos.getCheckedItemPosition();
+                if (position != ListView.INVALID_POSITION){
+                    int idProduto = arrayIds.get(position);
+                    retirarProduto(idProduto);
+                }
+            }
+        });
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        listarDados();
+    }
+
+    public void criarBancoDados(){
+        try {
+            bancoDados = openOrCreateDatabase("estoque", MODE_PRIVATE, null);
+            bancoDados.execSQL("CREATE TABLE IF NOT EXISTS produtos("+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT" +
+                    ", nome VARCHAR" +
+                " , tipoproduto VARCHAR" +
+                " , quantproduto INTEGER)");
+            bancoDados.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void listarDados();
+    try{
+
+    {
+        arrayIds = new ArrayList<Integer>();
+        bancoDados = openOrCreateDatabase("estoque", MODE_PRIVATE, null);
+        Cursor meuCursor = bancoDados.rawQuery("SELECT id, nome, tipoproduto, quantproduto FROM produtos", null);
+        ArrayList<String> meuAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1
+                linhas
+        );
+        listaprodutos.setAdapter(meuAdapter);
+
+        if (meuCursor.moveToFirst()) {
+            do {
+                String linha = "Nome" + meuCursor.getString(1) +
+                        " - Tipo: " + meuCursor.getString(2) +
+                        " - Quantidade: " + meuCursor.getInt(3);
+                linhas.add(linha);
+                arrayIds.add(meuCursor.getInt(0));
+            } while (meuCursor.moveToNext());
+        }
+        meuCursor.close();
+    }catch (Exception e){
+        e.printStackTrace();
+    }
+}
+    public void retirarProduto(int id){
+    try {
+        bancoDados = openOrCreateDatabase("estoque", MODE_PRIVATE, null);
+        String sql = "UPDATE produtos SET quantproduto = quantproduto - 1 WHERE id = ?";
+        SQLiteStatement stmt = bancoDados.compileStatement(sql);
+        stmt.bindLong(1, id);
+        stmt.executeUpdateDelete();
+
+        Cursor cursor = bancoDados.rawQuery("SELECT quantproduto FROM produtos WHERE id = ?", new String[]{String.valueOf(id)});
+        if (cursor.moveToFirst()) {
+            int(novaQuantidade = cursor.getInt(0));
+            if (novaQuantidade <= 0) {
+                String deleteSql = "DELETE FROM produtos WHERE id = ?";
+                SQLiteStatement deleteStmt = bancoDados.compileStatement(deleteSql);
+                deleteStmt.bindLong(1, id);
+                deleteStmt.executeUpdateDelete();
+            }
+        }
+        cursor.close();
+        bancoDados.close();
+        listarDados();
+    }catch (Exception e){
+        e.printStackTrace();
+
+    }
+
+}
+}
